@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<header>
+    <h1>Payroll System</h1>
+</header>
+<title>PAYROLL SYSTEM</title>
+<link rel="stylesheet" href="style.css">
+<style>
+    table {
+        width: 95%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        background: rgb(226, 163, 228);
+        color: rgb(255, 255, 255);
+    }
+    th {
+        background: #e66edc;
+        color: rgb(235, 235, 235);
+    }
+    td, th {
+        padding: 10px;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+<h2>Payroll</h2>
+
+<div class="container">
+    <input type="text" id="empName" placeholder="Employee Name"><br><br>
+    <input type="number" id="daysWorked" placeholder="Days Worked"><br><br>
+    <input type="number" id="dailyRate" placeholder="Daily Rate"><br><br>
+    <input type="number" id="deduction" placeholder="Deduction Amount"><br><br>
+
+    <button onclick="addEmployee()">Add Employee</button>
+    <button onclick="deleteEmployee()">Delete Employee</button>
+</div>
+
+<table id="payrollTable">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Employee Name</th>
+            <th>Days Worked</th>
+            <th>Daily Rate</th>
+            <th>Gross Pay</th>
+            <th>Deduction</th>
+            <th>Net Pay</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<div class="back-home"></div>
+    <button onclick="window.location.href='index.html'">Back to Home</button>
+</div>
+
+<script>
+let employees = [];
+
+function addEmployee() {
+    const name = document.getElementById('empName').value;
+    const days = parseFloat(document.getElementById('daysWorked').value);
+    const rate = parseFloat(document.getElementById('dailyRate').value);
+    const deduct = parseFloat(document.getElementById('deduction').value);
+
+    if (!name || isNaN(days) || isNaN(rate) || isNaN(deduct)) {
+        alert("Please fill out all fields correctly.");
+        return;
+    }
+
+    const gross = days * rate;
+    const net = gross - deduct;
+
+    employees.push({ name, days, rate, gross, deduct, net });
+    renderTable();
+
+    // clear input fields
+    document.getElementById('empName').value = '';
+    document.getElementById('daysWorked').value = '';
+    document.getElementById('dailyRate').value = '';
+    document.getElementById('deduction').value = '';
+}
+
+function deleteEmployee() {
+    const lineNum = parseInt(prompt("Enter the line number to delete:"));
+    if (isNaN(lineNum) || lineNum < 1 || lineNum > employees.length) {
+        alert("Invalid line number.");
+        return;
+    }
+    employees.splice(lineNum - 1, 1);
+    renderTable();
+}
+
+function renderTable() {
+    const tbody = document.querySelector("#payrollTable tbody");
+    tbody.innerHTML = "";
+    employees.forEach((emp, index) => {
+        const row = `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${emp.name}</td>
+                <td>${emp.days}</td>
+                <td>₱${emp.rate.toFixed(2)}</td>
+                <td>₱${emp.gross.toFixed(2)}</td>
+                <td>₱${emp.deduct.toFixed(2)}</td>
+                <td>₱${emp.net.toFixed(2)}</td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+}
+</script>
+</body>
+</html>

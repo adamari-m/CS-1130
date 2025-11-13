@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<header>
+    <h1>Income Tax Calculator</h1>
+</header>
+<title>INCOME TAX CALCULATOR</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h2>Income Tax</h2>
+
+<div class="container">
+    <label>Enter Taxable Income:</label><br>
+    <input type="number" id="income" placeholder="e.g. 520000"><br><br>
+    <button onclick="computeTax()">Compute Tax</button>
+
+    <h3 id="result"></h3>
+
+    <table border="1" cellpadding="8" cellspacing="0" style="margin:auto; background:white; color:black;">
+        <tr style="background:#007acc; color:white;">
+            <th>Over</th>
+            <th>But Not Over</th>
+            <th>Basic Tax + Rate</th>
+            <th>Example Taxable Income</th>
+            <th>Example Income Tax</th>
+        </tr>
+        <tr><td>-</td><td>₱250,000</td><td>0%</td><td>₱180,000</td><td>₱0.00</td></tr>
+        <tr><td>₱250,000</td><td>₱400,000</td><td>20% of excess over ₱250,000</td><td>₱320,000</td><td>₱14,000</td></tr>
+        <tr><td>₱400,000</td><td>₱800,000</td><td>₱30,000 + 25% of excess over ₱400,000</td><td>₱520,000</td><td>₱60,000</td></tr>
+        <tr><td>₱800,000</td><td>₱2,000,000</td><td>₱130,000 + 30% of excess over ₱800,000</td><td>₱930,000</td><td>₱169,000</td></tr>
+        <tr><td>₱2,000,000</td><td>₱8,000,000</td><td>₱490,000 + 32% of excess over ₱2,000,000</td><td>₱2,400,000</td><td>₱618,000</td></tr>
+        <tr><td>₱8,000,000</td><td>-</td><td>₱2,410,000 + 35% of excess over ₱8,000,000</td><td>₱10,000,000</td><td>₱3,110,000</td></tr>
+    </table>
+</div>
+
+<div class="back-home"></div>
+    <button onclick="window.location.href='index.html'">Back to Home</button>
+</div>
+
+<script>
+function computeTax() {
+    let income = parseFloat(document.getElementById("income").value);
+    let tax = 0;
+
+    if (isNaN(income) || income < 0) {
+        document.getElementById("result").innerText = "Please enter a valid income.";
+        return;
+    }
+
+    if (income <= 250000) tax = 0;
+    else if (income <= 400000) tax = (income - 250000) * 0.20;
+    else if (income <= 800000) tax = 30000 + (income - 400000) * 0.25;
+    else if (income <= 2000000) tax = 130000 + (income - 800000) * 0.30;
+    else if (income <= 8000000) tax = 490000 + (income - 2000000) * 0.32;
+    else tax = 2410000 + (income - 8000000) * 0.35;
+
+    document.getElementById("result").innerHTML = `
+        <br><strong>Taxable Income:</strong> ₱${income.toLocaleString()}<br>
+        <strong>Income Tax:</strong> ₱${tax.toLocaleString(undefined, {minimumFractionDigits:2})}
+    `;
+}
+</script>
+</body>
+</html>

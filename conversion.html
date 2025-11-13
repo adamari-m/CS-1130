@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<header>
+    <h1>Conversion</h1>
+</header>
+<title>CONVERSION</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h2>Conversion (Celsius ⇆ Fahrenheit, Feet ⇆ Meters)</h2>
+
+<div class="converter">
+    <input type="number" id="valueInput" placeholder="Enter value">
+    <select id="conversionType">
+        <option value="CtoF">Celsius to Fahrenheit</option>
+        <option value="FtoC">Fahrenheit to Celsius</option>
+        <option value="MtoF">Meters to Feet</option>
+        <option value="FtoM">Feet to Meters</option>
+    </select>
+    <button onclick="convert()">Convert</button>
+    <h3 id="result"></h3>
+</div>
+
+<div class="back-home">
+    <button onclick="window.location.href='index.html'">Back to Home</button>
+</div>
+
+<script>
+function convert() {
+    let value = parseFloat(document.getElementById("valueInput").value);
+    let type = document.getElementById("conversionType").value;
+    let result = "";
+
+    if (isNaN(value)) {
+        document.getElementById("result").innerText = "Please enter a valid number.";
+        return;
+    }
+
+    switch (type) {
+        case "CtoF":
+            result = (value * 9/5 + 32).toFixed(2) + " °F";
+            break;
+        case "FtoC":
+            result = ((value - 32) * 5/9).toFixed(2) + " °C";
+            break;
+        case "MtoF":
+            result = (value * 3.28084).toFixed(2) + " ft";
+            break;
+        case "FtoM":
+            result = (value / 3.28084).toFixed(2) + " m";
+            break;
+    }
+
+    document.getElementById("result").innerText = "Result: " + result;
+}
+</script>
+</body>
+</html>
